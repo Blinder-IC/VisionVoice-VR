@@ -1,35 +1,21 @@
-package com.blinder.visionvoice.config;
+package com.blinder.visionvoice.application.services;
 
 import com.blinder.visionvoice.domain.repository.OcrRepository;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class OcrService implements OcrRepository {
+public class OcrService {
 
-    @Value("${ocr.space.api.key}")
-    private String apiKey;
+    private final OcrRepository ocrRepository;
 
-    private final WebClient webClient;
-
-    public OcrService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://api.ocr.space/parse/image")
-                .build();
+    @Autowired
+    public OcrService(OcrRepository ocrRepository) {
+        this.ocrRepository = ocrRepository;
     }
 
-    @Override
-    public Mono<String> extractText(byte[] imageBytes) {
-        return webClient.post()
-                .uri("?apikey=" + apiKey)
-                .bodyValue(imageBytes)
-                .retrieve()
-                .bodyToMono(String.class)
-                .map(response -> {
-                    // Process response to extract text
-                    // You might need to parse the JSON response
-                    return response; // Simplified for this example
-                });
+    public Mono<String> processImage(byte[] imageBytes) {
+        return ocrRepository.extractText(imageBytes);
     }
 }
