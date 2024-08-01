@@ -1,11 +1,7 @@
 package com.blinder.visionvoice.infrastructure.adapter;
 
 import com.blinder.visionvoice.domain.repository.OcrRepository;
-import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.google.cloud.vision.v1.AnnotateImageResponse;
-import com.google.cloud.vision.v1.Feature;
-import com.google.cloud.vision.v1.Image;
-import com.google.cloud.vision.v1.ImageAnnotatorClient;
+import com.google.cloud.vision.v1.*;
 import com.google.protobuf.ByteString;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -31,13 +27,19 @@ public class GoogleCloudOcrRepository implements OcrRepository {
                         .build();
                 List<AnnotateImageRequest> requests = Collections.singletonList(request);
 
-                AnnotateImageResponse response = vision.batchAnnotateImages(requests).getResponsesList().get(0);
+                AnnotateImageResponse response = vision.batchAnnotateImages(requests).getResponsesList().getFirst();
                 if (response.hasError()) {
                     throw new IOException("Error: " + response.getError().getMessage());
                 }
 
-                return response.getTextAnnotationsList().get(0).getDescription();
+                List<EntityAnnotation> textAnnotations = response.getTextAnnotationsList();
+                if (!textAnnotations.isEmpty()) {
+                    return textAnnotations.getFirst().getDescription();
+                } else {
+                    throw new IOException("No text annotations found in the image.");
+                }
             }
         });
     }
+
 }

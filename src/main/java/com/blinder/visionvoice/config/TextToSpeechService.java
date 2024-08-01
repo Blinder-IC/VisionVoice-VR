@@ -16,7 +16,8 @@ public class TextToSpeechService implements TtsRepository {
         return new byte[0];
     }
 
-    public void convertTextToSpeech(String text, String outputPath) throws Exception {
+    @Override
+    public byte[] convertTextToSpeech(String text, String outputPath) throws Exception {
         try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
             SynthesisInput input = SynthesisInput.newBuilder().setText(text).build();
 
@@ -36,6 +37,9 @@ public class TextToSpeechService implements TtsRepository {
             try (OutputStream out = new FileOutputStream(outputPath)) {
                 out.write(audioContents.toByteArray());
                 System.out.println("Audio content written to file \"" + outputPath + "\"");
+                return audioContents.toByteArray();
+            } catch (Exception e) {
+                throw new Exception("Error writing audio file: " + e.getMessage());
             }
         }
     }
