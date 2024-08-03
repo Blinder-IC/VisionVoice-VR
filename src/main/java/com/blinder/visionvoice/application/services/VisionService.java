@@ -2,6 +2,8 @@ package com.blinder.visionvoice.application.services;
 
 import com.blinder.visionvoice.gateway.OcrGateway;
 import com.blinder.visionvoice.gateway.input.ImageRequest;
+import com.blinder.visionvoice.gateway.output.ImageResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -53,8 +55,10 @@ public class VisionService {
 
         System.out.println(imageRequest);
 
-        // Send request using Feign Client and return the response as Mono<String>
-        return ocrGateway.annotateImage(imageRequest);
+        ResponseEntity<ImageResponse> ggcvReponse = ocrGateway.annotateImage(imageRequest);
+
+
+        return null;
     }
 
     private ImageRequest.Feature createFeature(String type, int maxResults, String model) {
