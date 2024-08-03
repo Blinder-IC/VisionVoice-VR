@@ -21,7 +21,8 @@ public class ProcessImageUseCase {
         return visionService.sendImageRequest(imageBytes)
                 .flatMap(detectedText -> {
                     try {
-                        return Mono.just(ttsRepository.synthesizeSpeech(detectedText));
+                        String outputPath = "output.mp3";
+                        return Mono.just(ttsRepository.convertTextToSpeech(detectedText, outputPath ));
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
