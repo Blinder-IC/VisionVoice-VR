@@ -1,6 +1,6 @@
 package com.blinder.visionvoice.domain.usecase;
 
-import com.blinder.visionvoice.config.TextToSpeechService;
+import com.blinder.visionvoice.domain.usecase.services.TextToSpeechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

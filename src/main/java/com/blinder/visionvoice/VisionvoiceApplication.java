@@ -9,9 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "com.blinder.visionvoice")
 @EnableFeignClients
 public class VisionvoiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(VisionvoiceApplication.class, args);
 	}
-
 }

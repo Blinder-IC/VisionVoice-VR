@@ -1,4 +1,4 @@
-package com.blinder.visionvoice.config;
+package com.blinder.visionvoice.domain.usecase.services;
 
 import com.blinder.visionvoice.domain.repository.TtsRepository;
 import com.google.cloud.texttospeech.v1.*;
@@ -22,7 +22,7 @@ public class TextToSpeechService implements TtsRepository {
             SynthesisInput input = SynthesisInput.newBuilder().setText(text).build();
 
             VoiceSelectionParams voice = VoiceSelectionParams.newBuilder()
-                    .setLanguageCode("pt-BR")
+                    .setLanguageCode("en-US")
                     .setSsmlGender(SsmlVoiceGender.NEUTRAL)
                     .build();
 
